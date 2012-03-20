@@ -24,6 +24,7 @@ Patch3:		meka-0.73-noseal.patch
 Patch4:		meka-0.73-gcc45.patch
 
 Patch5:		meka-0.73-sfmt.patch
+Patch6:		meka-0.73-png15.patch
 
 # This is package contains ix86 asm code
 ExclusiveArch:	%{ix86}
@@ -69,6 +70,8 @@ And if you are, I doubt you will want to play Nintendo games. So forget it.
 %patch4 -p1
 # Fix string format error
 %patch5 -p1
+# Fix build with png15
+%patch6 -p1
 # Remove pre-built lib files
 find -name '*.lib' -exec %__rm -f '{}' \;
 # Fix end-of-line-encoding
