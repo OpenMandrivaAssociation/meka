@@ -1,0 +1,41 @@
+diff -urN meka-0.73/srcs/libaddon/png/loadpng.c meka-0.73-patched/srcs/libaddon/png/loadpng.c
+--- meka-0.73/srcs/libaddon/png/loadpng.c	2006-11-04 17:23:44.000000000 +1000
++++ meka-0.73-patched/srcs/libaddon/png/loadpng.c	2012-03-20 18:42:40.967502278 +1100
+@@ -9,6 +9,7 @@
+ #include "system.h" // allegro.h, because of STATICLINK stuff...
+ #include <allegro/internal/aintern.h>
+ #include "loadpng.h"
++#include "zlib.h"
+ 
+ /* We need internals _color_load_depth and _fixup_loaded_bitmap.  The
+  * first can be replaced by the new get_color_depth() function which
+@@ -287,7 +288,7 @@
+      * the normal method of doing things with libpng).  REQUIRED unless you
+      * set up your own error handlers in the png_create_read_struct() earlier.
+      */
+-    if (setjmp(png_ptr->jmpbuf)) {
++    if (setjmp(png_jmpbuf(png_ptr))) {
+ 	/* Free all of the memory associated with the png_ptr and info_ptr */
+ 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+ 	pack_fclose(fp);
+@@ -386,7 +387,7 @@
+      * the normal method of doing things with libpng).  REQUIRED unless you
+      * set up your own error handlers in the png_create_read_struct() earlier.
+      */
+-    if (setjmp(png_ptr->jmpbuf)) {
++    if (setjmp(png_jmpbuf(png_ptr))) {
+ 	/* Free all of the memory associated with the png_ptr and info_ptr */
+ 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+ 	/* If we get here, we had a problem reading the file */
+diff -urN meka-0.73/srcs/libaddon/png/savepng.c meka-0.73-patched/srcs/libaddon/png/savepng.c
+--- meka-0.73/srcs/libaddon/png/savepng.c	2006-11-04 17:23:44.000000000 +1000
++++ meka-0.73-patched/srcs/libaddon/png/savepng.c	2012-03-20 18:43:07.823919248 +1100
+@@ -140,7 +140,7 @@
+     }
+ 
+     /* Set error handling. */
+-    if (setjmp(png_ptr->jmpbuf)) {
++    if (setjmp(png_jmpbuf(png_ptr))) {
+ 	/* If we get here, we had a problem reading the file. */
+ 	pack_fclose(fp);
+ 	png_destroy_write_struct(&png_ptr, (png_infopp)NULL);

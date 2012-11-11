@@ -1,0 +1,21 @@
+diff -dur meka/srcs/Makefile meka.noseal/srcs/Makefile
+--- meka/srcs/Makefile	2008-03-15 23:38:10.000000000 +0100
++++ meka.noseal/srcs/Makefile	2008-08-22 15:01:52.000000000 +0200
+@@ -88,7 +88,7 @@
+ MKDIR   = mkdir
+ #--- Definitions
+ DEF_OS  = -DARCH_UNIX -DX86_ASM -DASM_SYMBOLS_REQUIRE_UNDERSCORE
+-INC_OS  = -Ilibs -I../include		                               # This may require an update
++INC_OS  = -Ilibs -I../include -I../libs/seal/include  # This may require an update
+ X86_ASM = yes
+ #--- Libraries
+ LIB_OS  = -Llibs -L/usr/X11R6/lib -lX11 -lXext -lm -lpthread -L../lib  # This may require an update
+@@ -184,7 +184,7 @@
+ endif
+ 
+ ifeq ($(SYSTEM), unix)
+-LIB_SOUND = -lseal
++OBJ_SOUND += $(OD)/sound/null_seal.o
+ endif
+ 
+ ifeq ($(SYSTEM), macosx)

@@ -1,0 +1,19 @@
+--- meka.orig/srcs/Makefile	2005-09-25 17:15:24.000000000 +0200
++++ meka/srcs/Makefile	2006-12-16 14:11:46.000000000 +0100
+@@ -280,6 +286,7 @@
+ #-----------------------------------------------------
+ # Compiler Flags
+ #-----------------------------------------------------
++RPMFLAGS =
+ CFLAGS = $(INCLUDES) $(DEFINES)
+ 
+ ifeq ($(SYSTEM), win32)
+@@ -291,7 +298,7 @@
+ # UNIX/MS-DOS
+ # RELEASE build
+ ifeq ($(BUILD), release)
+-CFLAGS += -Wall -march=pentium -O6 -ffast-math -fno-strength-reduce -funroll-all-loops -fomit-frame-pointer 
++CFLAGS += ${RPMFLAGS}
+ endif
+ # DEBUG build
+ ifeq ($(BUILD), debug)

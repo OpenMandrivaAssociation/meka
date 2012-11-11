@@ -1,0 +1,973 @@
+diff -urN meka-0.73-orig/srcs/app_memview.c meka-0.73-patched/srcs/app_memview.c
+--- meka-0.73-orig/srcs/app_memview.c	2008-06-20 23:04:44.000000000 +1100
++++ meka-0.73-patched/srcs/app_memview.c	2012-03-20 17:36:00.509046781 +1100
+@@ -500,9 +500,9 @@
+ {
+     t_memory_viewer *mv = MemoryViewer_MainInstance;
+     if (mv->active ^= 1)
+-        Msg(MSGT_USER, Msg_Get (MSG_MemoryEditor_Enabled));
++        Msg(MSGT_USER, "%s", Msg_Get (MSG_MemoryEditor_Enabled));
+     else
+-        Msg(MSGT_USER, Msg_Get (MSG_MemoryEditor_Disabled));
++        Msg(MSGT_USER, "%s", Msg_Get (MSG_MemoryEditor_Disabled));
+     gui_box_show(mv->box, mv->active, TRUE);
+     gui_menu_inverse_check(menus_ID.tools, 4);
+ }
+@@ -747,7 +747,7 @@
+             if (machine & MACHINE_POWER_ON)
+                 WrZ80_NoHook(addr, value);
+             else
+-                Msg (MSGT_USER, Msg_Get(MSG_MemoryEditor_WriteZ80_Unable));
++                Msg (MSGT_USER, "%s", Msg_Get(MSG_MemoryEditor_WriteZ80_Unable));
+             break;
+         }
+     case MEMTYPE_ROM:     
+diff -urN meka-0.73-orig/srcs/app_options.c meka-0.73-patched/srcs/app_options.c
+--- meka-0.73-orig/srcs/app_options.c	2007-10-18 13:34:38.000000000 +1100
++++ meka-0.73-patched/srcs/app_options.c	2012-03-20 17:28:18.754295409 +1100
+@@ -40,7 +40,7 @@
+ static void    Option_Switch_NES_Crap(void)
+ {
+     g_Configuration.enable_NES = FALSE;
+-    Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_NES_Deny_Facts));
++    Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_NES_Deny_Facts));
+ }
+ 
+ void    Options_Init_Applet(void)
+diff -urN meka-0.73-orig/srcs/app_palview.c meka-0.73-patched/srcs/app_palview.c
+--- meka-0.73-orig/srcs/app_palview.c	2006-11-04 17:23:46.000000000 +1000
++++ meka-0.73-patched/srcs/app_palview.c	2012-03-20 17:36:47.619030359 +1100
+@@ -85,9 +85,9 @@
+     t_app_palette_viewer *pv = &PaletteViewer;  // Global instance
+ 
+     if (pv->active ^= 1)
+-        Msg (MSGT_USER, Msg_Get (MSG_Palette_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Palette_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get (MSG_Palette_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Palette_Disabled));
+     gui_box_show (pv->box, pv->active, TRUE);
+     gui_menu_inverse_check (menus_ID.tools, 1);
+ }
+diff -urN meka-0.73-orig/srcs/app_techinfo.c meka-0.73-patched/srcs/app_techinfo.c
+--- meka-0.73-orig/srcs/app_techinfo.c	2007-05-27 13:45:48.000000000 +1100
++++ meka-0.73-patched/srcs/app_techinfo.c	2012-03-20 17:34:38.588080951 +1100
+@@ -262,9 +262,9 @@
+ void    TechInfo_Switch (void)
+ {
+     if (TechInfo.active ^= 1)
+-        Msg (MSGT_USER, Msg_Get(MSG_TechInfo_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get(MSG_TechInfo_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get(MSG_TechInfo_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get(MSG_TechInfo_Disabled));
+     gui_box_show(TechInfo.box, TechInfo.active, TRUE);
+     gui_menu_inverse_check(menus_ID.tools, 5);
+ }
+diff -urN meka-0.73-orig/srcs/app_textview.c meka-0.73-patched/srcs/app_textview.c
+--- meka-0.73-orig/srcs/app_textview.c	2008-03-23 16:07:20.000000000 +1000
++++ meka-0.73-patched/srcs/app_textview.c	2012-03-20 17:33:45.445107031 +1100
+@@ -200,16 +200,16 @@
+     if (tv->current_file != current_file)
+     {
+         if (TextViewer_Open(tv, title, filename) != MEKA_ERR_OK)
+-            Msg(MSGT_USER, Msg_Get(MSG_Doc_File_Error));
++            Msg(MSGT_USER,"%s", Msg_Get(MSG_Doc_File_Error));
+         tv->active = TRUE;
+         tv->current_file = current_file;
+     }
+     else
+     {
+         if (tv->active ^= 1)
+-            Msg(MSGT_USER, Msg_Get(MSG_Doc_Enabled));
++            Msg(MSGT_USER, "%s", Msg_Get(MSG_Doc_Enabled));
+         else
+-            Msg(MSGT_USER, Msg_Get(MSG_Doc_Disabled));
++            Msg(MSGT_USER, "%s", Msg_Get(MSG_Doc_Disabled));
+     }
+ 
+     gui_box_show(tv->box, tv->active, TRUE);
+@@ -222,7 +222,7 @@
+ {
+     t_app_textviewer *tv = &TextViewer; // Global instance
+     tv->active = FALSE;
+-    Msg(MSGT_USER, Msg_Get(MSG_Doc_Disabled));
++    Msg(MSGT_USER, "%s", Msg_Get(MSG_Doc_Disabled));
+     gui_box_show(tv->box, tv->active, TRUE);
+     gui_menu_un_check_area(menus_ID.help, 0, DOC_MAX - 1);
+ }
+diff -urN meka-0.73-orig/srcs/app_tileview.c meka-0.73-patched/srcs/app_tileview.c
+--- meka-0.73-orig/srcs/app_tileview.c	2007-05-27 13:45:48.000000000 +1100
++++ meka-0.73-patched/srcs/app_tileview.c	2012-03-20 17:30:04.448250665 +1100
+@@ -272,9 +272,9 @@
+ void    TileViewer_Switch (void)
+ {
+     if (TileViewer.active ^= 1)
+-        Msg (MSGT_USER, Msg_Get (MSG_TilesViewer_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_TilesViewer_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get (MSG_TilesViewer_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_TilesViewer_Disabled));
+     gui_box_show (TileViewer.box, TileViewer.active, TRUE);
+     gui_menu_inverse_check (menus_ID.tools, 2);
+ }
+diff -urN meka-0.73-orig/srcs/blitintf.c meka-0.73-patched/srcs/blitintf.c
+--- meka-0.73-orig/srcs/blitintf.c	2008-03-23 16:07:20.000000000 +1000
++++ meka-0.73-patched/srcs/blitintf.c	2012-03-20 17:46:26.336993581 +1100
+@@ -175,7 +175,7 @@
+ 
+     // Open and read file
+     if ((tf = tfile_read (Blitters.filename)) == NULL)
+-        Quit_Msg (meka_strerror());
++        Quit_Msg ("%s", meka_strerror());
+     ConsolePrint ("\n");
+ 
+     // Parse each line
+@@ -212,7 +212,7 @@
+ 
+     // Requires at least 1 blitter
+     if (Blitters.count == 0)
+-        Quit_Msg (Msg_Get (MSG_Blitters_Error_Not_Enough));
++        Quit_Msg ("%s", Msg_Get (MSG_Blitters_Error_Not_Enough));
+ 
+     // Current blitter
+     if (Blitters.blitter_configuration_name != NULL)
+diff -urN meka-0.73-orig/srcs/bmemory.c meka-0.73-patched/srcs/bmemory.c
+--- meka-0.73-orig/srcs/bmemory.c	2008-06-20 23:04:44.000000000 +1100
++++ meka-0.73-patched/srcs/bmemory.c	2012-03-20 16:58:54.066666116 +1100
+@@ -129,7 +129,7 @@
+ 	if (sms.SRAM_Pages > 0)
+ 		Msg (MSGT_USER, Msg_Get (MSG_SRAM_Loaded), sms.SRAM_Pages * 8);
+ 	else
+-		Msg (MSGT_USER, Msg_Get (MSG_SRAM_Load_Unable));
++		Msg (MSGT_USER, "%s", Msg_Get (MSG_SRAM_Load_Unable));
+ }
+ 
+ void    BMemory_SRAM_Save (FILE *f)
+diff -urN meka-0.73-orig/srcs/capture.c meka-0.73-patched/srcs/capture.c
+--- meka-0.73-orig/srcs/capture.c	2008-03-23 16:07:18.000000000 +1000
++++ meka-0.73-patched/srcs/capture.c	2012-03-20 17:18:01.324222571 +1100
+@@ -101,7 +101,7 @@
+     Capture_FileName_Get(s1);
+     if (Capture.id_number >= CAPTURE_ID_MAX)
+     {
+-        Msg(MSGT_USER, Msg_Get(MSG_Capture_Error_File));
++        Msg(MSGT_USER, "%s", Msg_Get(MSG_Capture_Error_File));
+         return;
+     }
+ 
+@@ -156,7 +156,7 @@
+     bmp = create_sub_bitmap(source, x_start, y_start, x_len, y_len);
+     if (bmp == NULL)
+     {
+-        Msg(MSGT_USER, Msg_Get(MSG_Capture_Error));
++        Msg(MSGT_USER, "%s", Msg_Get(MSG_Capture_Error));
+         return;
+     }
+     release_bitmap(source);
+@@ -164,7 +164,7 @@
+     //get_palette(pal);
+     if (save_bitmap(s1, bmp, NULL) != 0)
+     {
+-        Msg(MSGT_USER, Msg_Get(MSG_Capture_Error));
++        Msg(MSGT_USER, "%s", Msg_Get(MSG_Capture_Error));
+         destroy_bitmap(bmp);
+         return;
+     }
+diff -urN meka-0.73-orig/srcs/config.c meka-0.73-patched/srcs/config.c
+--- meka-0.73-orig/srcs/config.c	2010-05-31 00:48:52.000000000 +1100
++++ meka-0.73-patched/srcs/config.c	2012-03-20 17:19:45.237210694 +1100
+@@ -694,7 +694,7 @@
+ static void     Param_Check (int *current, const char *msg)
+ {
+     if ((*current) + 1 >= g_Env.argc)
+-        Quit_Msg (msg);
++        Quit_Msg ("%s", msg);
+     (*current)++;
+ }
+ 
+diff -urN meka-0.73-orig/srcs/country.c meka-0.73-patched/srcs/country.c
+--- meka-0.73-orig/srcs/country.c	2007-01-28 14:34:52.000000000 +1000
++++ meka-0.73-patched/srcs/country.c	2012-03-20 16:57:19.592509308 +1100
+@@ -22,9 +22,9 @@
+ 
+ void    Set_Country_European_US (void)
+ {
+-    Msg (MSGT_USER, Msg_Get (MSG_Country_European_US));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Country_European_US));
+     if (machine & MACHINE_POWER_ON)
+-        Msg (MSGT_USER_BOX, Msg_Get (MSG_Must_Reset));
++        Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Must_Reset));
+     g_Configuration.country = g_Configuration.country_cfg = COUNTRY_EXPORT;
+     gui_menu_un_check (menus_ID.country);
+     gui_menu_check (menus_ID.country, 0);
+@@ -39,9 +39,9 @@
+ 
+ void    Set_Country_JP (void)
+ {
+-    Msg (MSGT_USER, Msg_Get (MSG_Country_JAP));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Country_JAP));
+     if (machine & MACHINE_POWER_ON)
+-        Msg (MSGT_USER_BOX, Msg_Get (MSG_Must_Reset));
++        Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Must_Reset));
+     g_Configuration.country = g_Configuration.country_cfg = COUNTRY_JAPAN;
+     gui_menu_un_check (menus_ID.country);
+     gui_menu_check (menus_ID.country, 1);
+diff -urN meka-0.73-orig/srcs/data.c meka-0.73-patched/srcs/data.c
+--- meka-0.73-orig/srcs/data.c	2010-05-31 00:45:36.000000000 +1100
++++ meka-0.73-patched/srcs/data.c	2012-03-20 17:15:24.077261581 +1100
+@@ -50,7 +50,7 @@
+     assert(g_Datafile == NULL);
+     df = g_Datafile = load_datafile (g_Env.Paths.DataFile);
+     if (g_Datafile == NULL)
+-        Quit_Msg (Msg_Get (MSG_Failed));
++        Quit_Msg ("%s", Msg_Get (MSG_Failed));
+     ConsolePrint ("\n");
+ 
+     // Make a copy of ALL bitmaps in their original RGBA 32-bits version
+diff -urN meka-0.73-orig/srcs/datadump.c meka-0.73-patched/srcs/datadump.c
+--- meka-0.73-orig/srcs/datadump.c	2007-01-28 14:34:54.000000000 +1000
++++ meka-0.73-patched/srcs/datadump.c	2012-03-20 16:52:10.932969304 +1100
+@@ -52,7 +52,7 @@
+     // Update GUI checks & print message to user
+     gui_menu_un_check (menus_ID.dump_cfg);
+     gui_menu_check (menus_ID.dump_cfg, 0);
+-    Msg (MSGT_USER, Msg_Get (MSG_DataDump_Mode_Ascii));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_DataDump_Mode_Ascii));
+ }
+ 
+ //-----------------------------------------------------------------------------
+@@ -67,7 +67,7 @@
+     // Update GUI checks & print message to user
+     gui_menu_un_check (menus_ID.dump_cfg);
+     gui_menu_check (menus_ID.dump_cfg, 1);
+-    Msg (MSGT_USER, Msg_Get (MSG_DataDump_Mode_Raw));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_DataDump_Mode_Raw));
+ }
+ 
+ static void     DataDump_Write_Filename (char *s, const char *name)
+@@ -341,7 +341,7 @@
+     }
+     if (len == 0)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_DataDump_Error_Palette));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_DataDump_Error_Palette));
+         return;
+     }
+     if (DataDump.Mode == DATADUMP_MODE_RAW)
+@@ -368,7 +368,7 @@
+ 
+     if (n_sprites == 0)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_DataDump_Error_Sprites));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_DataDump_Error_Sprites));
+         return;
+     }
+ 
+@@ -419,7 +419,7 @@
+     BMemory_Get_Infos (&data, &len);
+     if (data == NULL)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_DataDump_Error_OB_Memory));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_DataDump_Error_OB_Memory));
+         return;
+     }
+     if (DataDump.Mode == DATADUMP_MODE_RAW)
+diff -urN meka-0.73-orig/srcs/debugger.c meka-0.73-patched/srcs/debugger.c
+--- meka-0.73-orig/srcs/debugger.c	2008-06-20 23:04:44.000000000 +1100
++++ meka-0.73-patched/srcs/debugger.c	2012-03-20 16:49:53.064711617 +1100
+@@ -1120,7 +1120,7 @@
+     {
+         // Note: we silently fail on MEKA_ERR_FILE_OPEN (file not found / cannot open)
+         if (meka_errno != MEKA_ERR_FILE_OPEN)
+-            Msg(MSGT_USER, meka_strerror());
++            Msg(MSGT_USER, "%s", meka_strerror());
+ 
+         // 2. Try "image.ext.sym"
+         snprintf(symbol_filename, FILENAME_LEN, "%s.sym", g_Env.Paths.MediaImageFile);
+@@ -1128,7 +1128,7 @@
+         if (symbol_file == NULL)
+         {
+             if (meka_errno != MEKA_ERR_FILE_OPEN)
+-                Msg(MSGT_USER, meka_strerror());
++                Msg(MSGT_USER, "%s", meka_strerror());
+             return;
+         }
+     }
+@@ -1160,7 +1160,7 @@
+             int n;
+             if (sscanf(line, "%hX:%hX %n", &bank, &addr, &n) < 2)
+             {
+-                Msg(MSGT_USER, Msg_Get(MSG_Debug_Symbols_Error));
++                Msg(MSGT_USER, "%s", Msg_Get(MSG_Debug_Symbols_Error));
+                 Msg(MSGT_USER_BOX, Msg_Get(MSG_Debug_Symbols_Error_Line), line_cnt);
+                 tfile_free(symbol_file);
+                 return;
+diff -urN meka-0.73-orig/srcs/drivers.c meka-0.73-patched/srcs/drivers.c
+--- meka-0.73-orig/srcs/drivers.c	2007-05-27 13:45:48.000000000 +1100
++++ meka-0.73-patched/srcs/drivers.c	2012-03-20 17:16:07.305248239 +1100
+@@ -53,7 +53,7 @@
+ {
+     if (num < 0 || num >= DRV_MAX)
+     {
+-        Quit_Msg (Msg_Get (MSG_Driver_Unknown));
++        Quit_Msg ("%s", Msg_Get (MSG_Driver_Unknown));
+     }
+     else
+     {
+diff -urN meka-0.73-orig/srcs/eeprom.c meka-0.73-patched/srcs/eeprom.c
+--- meka-0.73-orig/srcs/eeprom.c	2006-11-04 17:23:48.000000000 +1000
++++ meka-0.73-patched/srcs/eeprom.c	2012-03-20 16:59:40.741016601 +1100
+@@ -16,7 +16,7 @@
+   if (fread (EEPROM_93c46.Data, EEPROM_93C46_DATA_SIZE, 1, f) == 1)
+      Msg (MSGT_USER, Msg_Get (MSG_93c46_Loaded), EEPROM_93C46_DATA_SIZE);
+   else
+-     Msg (MSGT_USER, Msg_Get (MSG_93c46_Load_Unable));
++     Msg (MSGT_USER, "%s", Msg_Get (MSG_93c46_Load_Unable));
+ }
+ 
+ void    BMemory_93c46_Save (FILE *f)
+diff -urN meka-0.73-orig/srcs/fdc765.c meka-0.73-patched/srcs/fdc765.c
+--- meka-0.73-orig/srcs/fdc765.c	2006-11-04 17:23:46.000000000 +1000
++++ meka-0.73-patched/srcs/fdc765.c	2012-03-20 17:45:05.723987110 +1100
+@@ -561,12 +561,12 @@
+   if (DataSize > Disk->TracksSize)
+      {
+      Msg (MSGT_USER, Msg_Get (MSG_FDC765_Disk_Too_Large1), DataSize, Disk->TracksSize);
+-     Msg (MSGT_USER_BOX, Msg_Get (MSG_FDC765_Disk_Too_Large2));
++     Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_FDC765_Disk_Too_Large2));
+      }
+   if (DataSize < Disk->TracksSize)
+      {
+      Msg (MSGT_USER, Msg_Get (MSG_FDC765_Disk_Too_Small1), DataSize, Disk->TracksSize);
+-     Msg (MSGT_USER_BOX, Msg_Get (MSG_FDC765_Disk_Too_Small2));
++     Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_FDC765_Disk_Too_Small2));
+      memset ((byte *)Disk->Tracks + DataSize, 0, Disk->TracksSize - DataSize);
+      }
+ }
+diff -urN meka-0.73-orig/srcs/file.c meka-0.73-patched/srcs/file.c
+--- meka-0.73-orig/srcs/file.c	2008-03-23 16:07:24.000000000 +1000
++++ meka-0.73-patched/srcs/file.c	2012-03-20 17:14:42.989276163 +1100
+@@ -317,9 +317,9 @@
+             // Show BAD ROM warning
+             if (DB_CurrentEntry->flags & DB_FLAG_BAD)
+             {
+-                Msg (MSGT_USER_BOX, Msg_Get (MSG_LoadROM_Warning));
+-                Msg (MSGT_USER_BOX, Msg_Get (MSG_LoadROM_Bad_Dump_Long));
+-                Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_LoadROM_Bad_Dump_Short));
++                Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_LoadROM_Warning));
++                Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_LoadROM_Bad_Dump_Long));
++                Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_LoadROM_Bad_Dump_Short));
+             }
+ 
+             // Show Product Number
+diff -urN meka-0.73-orig/srcs/fskipper.c meka-0.73-patched/srcs/fskipper.c
+--- meka-0.73-orig/srcs/fskipper.c	2008-03-23 16:07:20.000000000 +1000
++++ meka-0.73-patched/srcs/fskipper.c	2012-03-20 16:56:05.650384017 +1100
+@@ -227,9 +227,9 @@
+ {
+     fskipper.FPS_Display = !fskipper.FPS_Display;
+     if (fskipper.FPS_Display)
+-        Msg (MSGT_USER, Msg_Get (MSG_FPS_Counter_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_FPS_Counter_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get (MSG_FPS_Counter_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_FPS_Counter_Disabled));
+ }
+ 
+ //-----------------------------------------------------------------------------
+diff -urN meka-0.73-orig/srcs/g_action.c meka-0.73-patched/srcs/g_action.c
+--- meka-0.73-orig/srcs/g_action.c	2008-03-23 16:07:22.000000000 +1000
++++ meka-0.73-patched/srcs/g_action.c	2012-03-20 17:21:17.820208908 +1100
+@@ -20,7 +20,7 @@
+ {
+     int depth = bitmap_color_depth(gui_buffer);
+ 
+-    Msg (MSGT_USER_INFOLINE, Msg_Get(MSG_Quit));
++    Msg (MSGT_USER_INFOLINE, "%s", Msg_Get(MSG_Quit));
+ 
+     // Shut up sound while fading
+     Sound_Playback_Stop();
+@@ -84,11 +84,11 @@
+     gui_menu_inverse_check (menus_ID.layers, 0);
+     if (opt.Layer_Mask & LAYER_SPRITES)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Layer_Spr_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Layer_Spr_Enabled));
+     }
+     else
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Layer_Spr_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Layer_Spr_Disabled));
+     }
+ }
+ 
+@@ -99,11 +99,11 @@
+     gui_menu_inverse_check (menus_ID.layers, 1);
+     if (opt.Layer_Mask & LAYER_BACKGROUND)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Layer_BG_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Layer_BG_Enabled));
+     }
+     else
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Layer_BG_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Layer_BG_Disabled));
+     }
+ }
+ 
+@@ -115,7 +115,7 @@
+         g_Configuration.sprite_flickering |= SPRITE_FLICKERING_ENABLED;
+     gui_menu_un_check (menus_ID.flickering);
+     gui_menu_check (menus_ID.flickering, 0);
+-    Msg (MSGT_USER, Msg_Get (MSG_Flickering_Auto));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Flickering_Auto));
+ }
+ 
+ // ACTION: SWITCH SPRITE FLICKERING TO 'TRUE' ----------------------------------
+@@ -124,7 +124,7 @@
+     g_Configuration.sprite_flickering = SPRITE_FLICKERING_ENABLED;
+     gui_menu_un_check (menus_ID.flickering);
+     gui_menu_check (menus_ID.flickering, 1);
+-    Msg (MSGT_USER, Msg_Get (MSG_Flickering_Yes));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Flickering_Yes));
+ }
+ 
+ // ACTION: SWITCH SPRITE FLICKERING TO 'FALSE' -----------------------------------
+@@ -133,7 +133,7 @@
+     g_Configuration.sprite_flickering = SPRITE_FLICKERING_NO;
+     gui_menu_un_check (menus_ID.flickering);
+     gui_menu_check (menus_ID.flickering, 2);
+-    Msg (MSGT_USER, Msg_Get (MSG_Flickering_No));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Flickering_No));
+ }
+ 
+ // ACTION: SWITCH BETWEEN FULLSCREEN AND INTERFACE MODES ----------------------
+diff -urN meka-0.73-orig/srcs/g_file.c meka-0.73-patched/srcs/g_file.c
+--- meka-0.73-orig/srcs/g_file.c	2008-07-06 22:26:34.000000000 +1100
++++ meka-0.73-patched/srcs/g_file.c	2012-03-20 17:26:18.553255887 +1100
+@@ -345,7 +345,7 @@
+     // Open current directory
+     if ((dir = opendir(".")) == 0)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Error_Directory_Open));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Error_Directory_Open));
+         return;
+     }
+ 
+diff -urN meka-0.73-orig/srcs/g_init.c meka-0.73-patched/srcs/g_init.c
+--- meka-0.73-orig/srcs/g_init.c	2007-01-28 14:34:52.000000000 +1000
++++ meka-0.73-patched/srcs/g_init.c	2012-03-20 17:22:00.992210801 +1100
+@@ -146,7 +146,7 @@
+     TextViewer_Init(&TextViewer);
+     // FIXME: save current file in meka.cfg
+     if (TextViewer_Open(&TextViewer, Msg_Get(MSG_Doc_BoxTitle), g_Env.Paths.DocumentationMain) != MEKA_ERR_OK)
+-        Msg (MSGT_USER, Msg_Get(MSG_Doc_File_Error));
++        Msg (MSGT_USER, "%s", Msg_Get(MSG_Doc_File_Error));
+     TextViewer.current_file = 0; // FIXME: Remove this field
+ 
+     // Technical Information
+diff -urN meka-0.73-orig/srcs/glasses.c meka-0.73-patched/srcs/glasses.c
+--- meka-0.73-orig/srcs/glasses.c	2008-03-23 16:07:22.000000000 +1000
++++ meka-0.73-patched/srcs/glasses.c	2012-03-20 17:09:44.814440981 +1100
+@@ -66,7 +66,7 @@
+         if (++security_cnt >= 180) // Arbitrary value (180 updates, should be 3 seconds)
+         {
+             security_cnt = 0;
+-            Msg (MSGT_USER, Msg_Get (MSG_Glasses_Unsupported));
++            Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Unsupported));
+             // Msg (MSGT_USER_BOX, Msg_Get (MSG_Glasses_Unsupported2));
+             Glasses_Switch_Enable ();
+         }
+@@ -245,12 +245,12 @@
+     if (Glasses.Enabled)
+     {
+         gui_menu_check (menus_ID.glasses, 0);
+-        Msg (MSGT_USER, Msg_Get (MSG_Glasses_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Enabled));
+     }
+     else
+     {
+         gui_menu_un_check_one (menus_ID.glasses, 0);
+-        Msg (MSGT_USER, Msg_Get (MSG_Glasses_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Disabled));
+     }
+     gui_menu_active_area (Glasses.Enabled, menus_ID.glasses, 1, 4);
+     Inputs_CFG_Peripherals_Draw ();
+@@ -262,7 +262,7 @@
+     Glasses.Mode = GLASSES_MODE_SHOW_BOTH;
+     gui_menu_un_check_area (menus_ID.glasses, 1, 4);
+     gui_menu_check (menus_ID.glasses, 1);
+-    Msg (MSGT_USER, Msg_Get (MSG_Glasses_Show_Both));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Show_Both));
+ }
+ 
+ void    Glasses_Switch_Mode_Show_Left (void)
+@@ -271,7 +271,7 @@
+     Glasses.Mode = GLASSES_MODE_SHOW_ONLY_LEFT;
+     gui_menu_un_check_area (menus_ID.glasses, 1, 4);
+     gui_menu_check (menus_ID.glasses, 2);
+-    Msg (MSGT_USER, Msg_Get (MSG_Glasses_Show_Left));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Show_Left));
+ }
+ 
+ void    Glasses_Switch_Mode_Show_Right (void)
+@@ -280,7 +280,7 @@
+     Glasses.Mode = GLASSES_MODE_SHOW_ONLY_RIGHT;
+     gui_menu_un_check_area (menus_ID.glasses, 1, 4);
+     gui_menu_check (menus_ID.glasses, 3);
+-    Msg (MSGT_USER, Msg_Get (MSG_Glasses_Show_Right));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Glasses_Show_Right));
+ }
+ 
+ void    Glasses_Switch_Mode_Com_Port (void)
+@@ -289,7 +289,7 @@
+     gui_menu_un_check_area (menus_ID.glasses, 1, 4);
+     gui_menu_check (menus_ID.glasses, 4);
+     Msg (MSGT_USER, Msg_Get (MSG_Glasses_Com_Port), Glasses.ComPort);
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Glasses_Com_Port2));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Glasses_Com_Port2));
+ }
+ 
+ //-----------------------------------------------------------------------------
+diff -urN meka-0.73-orig/srcs/inputs.c meka-0.73-patched/srcs/inputs.c
+--- meka-0.73-orig/srcs/inputs.c	2010-05-31 00:22:58.000000000 +1100
++++ meka-0.73-patched/srcs/inputs.c	2012-03-20 17:01:09.539785595 +1100
+@@ -283,8 +283,8 @@
+ void    Inputs_Switch_Joypad (void)
+ {
+     Inputs_CFG_Peripheral_Change (PLAYER_1, INPUT_JOYPAD);
+-    Msg (MSGT_USER, Msg_Get (MSG_Inputs_Joypad));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Digital));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_Joypad));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Digital));
+     gui_menu_un_check_area (menus_ID.inputs, 0, 4);
+     gui_menu_check (menus_ID.inputs, Inputs.Peripheral [PLAYER_1]);
+ }
+@@ -293,8 +293,8 @@
+ void    Inputs_Switch_LightPhaser (void)
+ {
+     Inputs_CFG_Peripheral_Change (PLAYER_1, INPUT_LIGHTPHASER);
+-    Msg (MSGT_USER, Msg_Get (MSG_Inputs_LightPhaser));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Mouse));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_LightPhaser));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Mouse));
+     gui_menu_un_check_area (menus_ID.inputs, 0, 4);
+     gui_menu_check (menus_ID.inputs, Inputs.Peripheral [PLAYER_1]);
+ }
+@@ -306,9 +306,9 @@
+     // Easter egg: Pong
+     if (Inputs_KeyPressed (KEY_P, FALSE)) 
+         Pong_Start ();
+-    Msg (MSGT_USER, Msg_Get (MSG_Inputs_PaddleControl));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Mouse));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Digital_Unrecommended));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_PaddleControl));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Mouse));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Digital_Unrecommended));
+     gui_menu_un_check_area (menus_ID.inputs, 0, 4);
+     gui_menu_check (menus_ID.inputs, Inputs.Peripheral [PLAYER_1]);
+ }
+@@ -316,8 +316,8 @@
+ void    Inputs_Switch_SportsPad (void)
+ {
+     Inputs_CFG_Peripheral_Change (PLAYER_1, INPUT_SPORTSPAD);
+-    Msg (MSGT_USER, Msg_Get (MSG_Inputs_SportsPad));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Mouse));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_SportsPad));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Mouse));
+     gui_menu_un_check_area (menus_ID.inputs, 0, 4);
+     gui_menu_check (menus_ID.inputs, Inputs.Peripheral [PLAYER_1]);
+ }
+@@ -325,8 +325,8 @@
+ void    Inputs_Switch_TVOekaki (void)
+ {
+     Inputs_CFG_Peripheral_Change (PLAYER_1, INPUT_TVOEKAKI);
+-    Msg (MSGT_USER, Msg_Get (MSG_Inputs_TVOekaki));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Inputs_Play_Pen));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_TVOekaki));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Inputs_Play_Pen));
+     gui_menu_un_check_area (menus_ID.inputs, 0, 4);
+     gui_menu_check (menus_ID.inputs, Inputs.Peripheral [PLAYER_1]);
+ }
+diff -urN meka-0.73-orig/srcs/inputs_c.c meka-0.73-patched/srcs/inputs_c.c
+--- meka-0.73-orig/srcs/inputs_c.c	2007-10-18 13:34:38.000000000 +1100
++++ meka-0.73-patched/srcs/inputs_c.c	2012-03-20 17:02:45.199558688 +1100
+@@ -415,18 +415,18 @@
+     switch (input_src->type)
+     {
+     case INPUT_SRC_TYPE_KEYBOARD:
+-        Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_Inputs_Src_Map_Keyboard));
++        Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_Inputs_Src_Map_Keyboard));
+         break;
+     case INPUT_SRC_TYPE_JOYPAD:
+-        Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_Inputs_Src_Map_Joypad));
++        Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_Inputs_Src_Map_Joypad));
+         break;
+     case INPUT_SRC_TYPE_MOUSE:
+         if (MapIdx < 4)
+         {
+-            Msg (MSGT_USER, Msg_Get (MSG_Inputs_Src_Map_Mouse_No_A));
++            Msg (MSGT_USER, "%s", Msg_Get (MSG_Inputs_Src_Map_Mouse_No_A));
+             return;
+         }
+-        Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_Inputs_Src_Map_Mouse));
++        Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_Inputs_Src_Map_Mouse));
+         break;
+     default:
+         Msg (MSGT_USER, "Error #24813R");
+@@ -493,7 +493,7 @@
+         found = TRUE;
+         input_src->Map [Inputs_CFG.Current_Map].Idx = -1;
+         key[KEY_ESC] = 0; // Disable the key to avoid it to have an effect now
+-        Msg (MSGT_USER_INFOLINE, Msg_Get (MSG_Inputs_Src_Map_Cancelled));
++        Msg (MSGT_USER_INFOLINE, "%s", Msg_Get (MSG_Inputs_Src_Map_Cancelled));
+         Inputs_CFG_Map_Change_End ();
+         return;
+     }
+diff -urN meka-0.73-orig/srcs/inputs_f.c meka-0.73-patched/srcs/inputs_f.c
+--- meka-0.73-orig/srcs/inputs_f.c	2008-03-23 16:07:22.000000000 +1000
++++ meka-0.73-patched/srcs/inputs_f.c	2012-03-20 17:03:51.800786510 +1100
+@@ -247,7 +247,7 @@
+     ConsolePrint (Msg_Get (MSG_Inputs_Src_Loading));
+     tf = tfile_read (Inputs.FileName);
+     if (tf == NULL)
+-        Quit_Msg (meka_strerror());
++        Quit_Msg ("%s", meka_strerror());
+     ConsolePrint ("\n");
+ 
+     // Parse each line
+@@ -318,7 +318,7 @@
+ 
+     // Verify that we have enough inputs sources
+     if (Inputs.Sources_Max == 0)
+-        Quit_Msg (Msg_Get (MSG_Inputs_Src_Not_Enough));
++        Quit_Msg ("%s", Msg_Get (MSG_Inputs_Src_Not_Enough));
+ }
+ 
+ void    Write_Inputs_Src_List (void)
+diff -urN meka-0.73-orig/srcs/inputs_i.c meka-0.73-patched/srcs/inputs_i.c
+--- meka-0.73-orig/srcs/inputs_i.c	2007-05-27 13:45:48.000000000 +1100
++++ meka-0.73-patched/srcs/inputs_i.c	2012-03-20 17:05:45.570655765 +1100
+@@ -102,7 +102,7 @@
+             readkey ();
+             if (calibrate_joystick(i) != 0)
+             {
+-                Quit_Msg (Msg_Get (MSG_Inputs_Joy_Calibrate_Error));
++                Quit_Msg ("%s", Msg_Get (MSG_Inputs_Joy_Calibrate_Error));
+             }
+         }
+     }
+diff -urN meka-0.73-orig/srcs/keyboard.c meka-0.73-patched/srcs/keyboard.c
+--- meka-0.73-orig/srcs/keyboard.c	2008-06-20 23:04:44.000000000 +1100
++++ meka-0.73-patched/srcs/keyboard.c	2012-03-20 17:06:37.417602457 +1100
+@@ -208,9 +208,9 @@
+     Skins_Background_Redraw();
+     gui.info.must_redraw = TRUE;
+     if (Inputs.Keyboard_Enabled)
+-        Msg (MSGT_USER, Msg_Get (MSG_Inputs_SK1100_Enabled));
++        Msg ("%s", MSGT_USER, Msg_Get (MSG_Inputs_SK1100_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get (MSG_Inputs_SK1100_Disabled));
++        Msg ("%s", MSGT_USER, Msg_Get (MSG_Inputs_SK1100_Disabled));
+ }
+ 
+ //-----------------------------------------------------------------------------
+diff -urN meka-0.73-orig/srcs/machine.c meka-0.73-patched/srcs/machine.c
+--- meka-0.73-orig/srcs/machine.c	2010-05-30 21:33:28.000000000 +1100
++++ meka-0.73-patched/srcs/machine.c	2012-03-20 16:41:42.000000000 +1100
+@@ -32,13 +32,13 @@
+     // Verbose
+     if (machine & MACHINE_PAUSED)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Machine_Pause));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Machine_Pause));
+         // gui_menu_check (menus_ID.machine, 2);
+         Screen_Save_to_Next_Buffer ();
+     }
+     else
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Machine_Resume));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Machine_Resume));
+         // gui_menu_un_check_one (menus_ID.machine, 2);
+     }
+ }
+diff -urN meka-0.73-orig/srcs/memory.c meka-0.73-patched/srcs/memory.c
+--- meka-0.73-orig/srcs/memory.c	2006-11-04 17:23:48.000000000 +1000
++++ meka-0.73-patched/srcs/memory.c	2012-03-20 17:47:17.321992641 +1100
+@@ -16,7 +16,7 @@
+  if ((p = malloc (size)) == NULL)
+     {
+     meka_errno = MEKA_ERR_MEMORY;
+-    Quit_Msg (meka_strerror());
++    Quit_Msg ("%s", meka_strerror());
+     }
+  return (p);
+ }
+diff -urN meka-0.73-orig/srcs/message.c meka-0.73-patched/srcs/message.c
+--- meka-0.73-orig/srcs/message.c	2008-03-23 16:07:18.000000000 +1000
++++ meka-0.73-patched/srcs/message.c	2012-03-20 17:16:58.955234943 +1100
+@@ -171,7 +171,7 @@
+     gui_menu_un_check (menus_ID.languages);
+ 	gui_menu_check (menus_ID.languages, event->menu_item_idx);
+     Msg (MSGT_USER, Msg_Get (MSG_Language_Set), Messages.Lang_Cur->Name);
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Language_Set_Warning));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Language_Set_Warning));
+ 
+     // Post-process
+     // FIXME: Rebuild menus
+diff -urN meka-0.73-orig/srcs/patch.c meka-0.73-patched/srcs/patch.c
+--- meka-0.73-orig/srcs/patch.c	2006-11-04 17:23:46.000000000 +1000
++++ meka-0.73-patched/srcs/patch.c	2012-03-20 17:10:52.191394250 +1100
+@@ -215,7 +215,7 @@
+ 
+         switch (Patches_List_Parse_Line (line))
+         {
+-        case 1: tfile_free (tf); Quit_Msg (Msg_Get (MSG_Error_Memory));                   break;
++        case 1: tfile_free (tf); Quit_Msg ("%s", Msg_Get (MSG_Error_Memory));                   break;
+         case 2: tfile_free (tf); Quit_Msg (Msg_Get (MSG_Patch_Unrecognized), line_cnt);   break;
+         case 3: tfile_free (tf); Quit_Msg (Msg_Get (MSG_Patch_Missing), line_cnt);        break;
+         }
+diff -urN meka-0.73-orig/srcs/saves.c meka-0.73-patched/srcs/saves.c
+--- meka-0.73-orig/srcs/saves.c	2010-05-30 22:00:00.000000000 +1100
++++ meka-0.73-patched/srcs/saves.c	2012-03-20 17:12:18.175342871 +1100
+@@ -124,7 +124,7 @@
+     // Do not allow saving if machine is not running
+     if ((machine & MACHINE_RUN) != MACHINE_RUN)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_No_ROM));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_No_ROM));
+         return;
+     }
+ 
+@@ -132,7 +132,7 @@
+     // This would be messy with file handling currently
+     if ((machine & MACHINE_NOT_IN_BIOS) == 0)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Save_Not_in_BIOS));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Save_Not_in_BIOS));
+         return;
+     }
+ 
+@@ -168,7 +168,7 @@
+     // Do not allow loading if machine is not running
+     if ((machine & MACHINE_RUN) != MACHINE_RUN)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_No_ROM));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_No_ROM));
+         return;
+     }
+ 
+@@ -487,7 +487,7 @@
+     word   w;
+     byte   i, version;
+ 
+-    Msg (MSGT_USER, Msg_Get (MSG_Load_Massage));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Load_Massage));
+     /* Skipping "SNAP" */
+     fseek (f, 0x09, SEEK_SET);
+     fread (&version, 1, 1, f);
+diff -urN meka-0.73-orig/srcs/sdsc.c meka-0.73-patched/srcs/sdsc.c
+--- meka-0.73-orig/srcs/sdsc.c	2006-11-04 17:23:48.000000000 +1000
++++ meka-0.73-patched/srcs/sdsc.c	2012-03-20 17:18:44.633216319 +1100
+@@ -61,7 +61,7 @@
+     if (strncmp((const char *)Game_ROM + 0x7FE0, SDSC_MAGIC, 4) != 0)
+         return (FALSE);
+ 
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_LoadROM_SDSC));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_LoadROM_SDSC));
+ 
+     // Name
+     offset = *(u16 *)(Game_ROM + 0x7FEC);
+diff -urN meka-0.73-orig/srcs/skin_bg.c meka-0.73-patched/srcs/skin_bg.c
+--- meka-0.73-orig/srcs/skin_bg.c	2006-11-04 17:23:48.000000000 +1000
++++ meka-0.73-patched/srcs/skin_bg.c	2012-03-20 17:24:44.626232961 +1100
+@@ -78,7 +78,7 @@
+ 
+     if (factor == 0)
+     {
+-        Msg (MSGT_USER, Msg_Get (MSG_Theme_Error_BG_Big));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Theme_Error_BG_Big));
+         return;
+     }
+ 
+diff -urN meka-0.73-orig/srcs/skin.c meka-0.73-patched/srcs/skin.c
+--- meka-0.73-orig/srcs/skin.c	2009-08-23 20:04:50.000000000 +1100
++++ meka-0.73-patched/srcs/skin.c	2012-03-20 17:23:00.427216154 +1100
+@@ -246,7 +246,7 @@
+ 
+     // Verify that we have at least 1 loaded skin
+     if (skin_first_valid == NULL)
+-        Quit_Msg (Msg_Get(MSG_Theme_Error_Not_Enough));
++        Quit_Msg ("%s", Msg_Get(MSG_Theme_Error_Not_Enough));
+ 
+     // Add full black skin (for fading out)
+     {
+@@ -565,7 +565,7 @@
+         Skins.background_picture = load_bitmap(filename, NULL);
+         if (Skins.background_picture == NULL)
+         {
+-            Msg(MSGT_USER, Msg_Get (MSG_Theme_Error_BG));
++            Msg(MSGT_USER, "%s", Msg_Get (MSG_Theme_Error_BG));
+             Msg(MSGT_USER_BOX, Msg_Get (MSG_Theme_Error_BG_FileName), Skins.skin_current->background_picture);
+         }
+     }
+diff -urN meka-0.73-orig/srcs/sound/sasound.c meka-0.73-patched/srcs/sound/sasound.c
+--- meka-0.73-orig/srcs/sound/sasound.c	2008-03-23 16:07:08.000000000 +1000
++++ meka-0.73-patched/srcs/sound/sasound.c	2012-03-20 17:42:05.335976854 +1100
+@@ -583,7 +583,7 @@
+                     if (Meka_State == MEKA_STATE_INIT)
+                         printf ("%s\n", Msg_Get (MSG_Sound_Stream_Error));
+                     else
+-                        Msg (MSGT_DEBUG, Msg_Get (MSG_Sound_Stream_Error));
++                        Msg (MSGT_DEBUG, "%s", Msg_Get (MSG_Sound_Stream_Error));
+                     #endif
+ 
+                     /**** all buffer restart ****/
+diff -urN meka-0.73-orig/srcs/sound/s_log.c meka-0.73-patched/srcs/sound/s_log.c
+--- meka-0.73-orig/srcs/sound/s_log.c	2007-01-28 14:34:50.000000000 +1000
++++ meka-0.73-patched/srcs/sound/s_log.c	2012-03-20 17:41:13.073979147 +1100
+@@ -72,7 +72,7 @@
+     Sound_Log_FileName_Get (FileName, Sound.LogWav_FileName_Template, &Sound.LogWav_ID);
+     if (Sound.LogWav_ID >= SOUND_LOG_ID_MAX)
+        {
+-       Msg (MSGT_USER, Msg_Get (MSG_Sound_Dumping_Error_File_1));
++       Msg (MSGT_USER, "%s", Msg_Get (MSG_Sound_Dumping_Error_File_1));
+        return;
+        }
+     Sound.LogWav = WAV_Start(FileName);
+@@ -114,7 +114,7 @@
+  Sound_Log_FileName_Get (FileName, Sound.LogVGM_FileName_Template, &Sound.LogVGM_ID);
+  if (Sound.LogVGM_ID >= SOUND_LOG_ID_MAX)
+     {
+-    Msg (MSGT_USER, Msg_Get (MSG_Sound_Dumping_Error_File_1));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_Sound_Dumping_Error_File_1));
+     return;
+     }
+  if (VGM_Start(&Sound.LogVGM, FileName, Sound.LogVGM_Logging_Accuracy) != MEKA_ERR_OK)
+@@ -147,17 +147,17 @@
+     if (Sound.LogVGM_Logging_Accuracy == VGM_LOGGING_ACCURACY_SAMPLE)
+     {
+         Sound.LogVGM_Logging_Accuracy = VGM_LOGGING_ACCURACY_FRAME;
+-        Msg (MSGT_USER, Msg_Get (MSG_Sound_Dumping_VGM_Acc_Frame));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Sound_Dumping_VGM_Acc_Frame));
+     }
+     else
+     {
+         Sound.LogVGM_Logging_Accuracy = VGM_LOGGING_ACCURACY_SAMPLE;
+-        Msg (MSGT_USER, Msg_Get (MSG_Sound_Dumping_VGM_Acc_Sample));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Sound_Dumping_VGM_Acc_Sample));
+     }
+     gui_menu_inverse_check (menus_ID.sound_log, 2);
+     if (Sound.LogVGM.Logging != VGM_LOGGING_NO)
+     {
+-        Msg (MSGT_USER_BOX, Msg_Get (MSG_Sound_Dumping_VGM_Acc_Change));
++        Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Sound_Dumping_VGM_Acc_Change));
+     }
+ }
+ 
+diff -urN meka-0.73-orig/srcs/sound/s_misc.c meka-0.73-patched/srcs/sound/s_misc.c
+--- meka-0.73-orig/srcs/sound/s_misc.c	2007-04-09 19:13:14.000000000 +1100
++++ meka-0.73-patched/srcs/sound/s_misc.c	2012-03-20 17:39:41.159989249 +1100
+@@ -91,8 +91,8 @@
+ void    FM_Disable (void)
+ {
+     Sound.FM_Enabled = FALSE;
+-    Msg (MSGT_USER, Msg_Get (MSG_FM_Disabled));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Must_Reset));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_FM_Disabled));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Must_Reset));
+     gui_menu_un_check_area (menus_ID.fm, 0, 1);
+     gui_menu_check (menus_ID.fm, 1);
+ }
+@@ -100,8 +100,8 @@
+ void    FM_Enable (void)
+ {
+     Sound.FM_Enabled = TRUE;
+-    Msg (MSGT_USER, Msg_Get (MSG_FM_Enabled));
+-    Msg (MSGT_USER_BOX, Msg_Get (MSG_Must_Reset));
++    Msg (MSGT_USER, "%s", Msg_Get (MSG_FM_Enabled));
++    Msg (MSGT_USER_BOX, "%s", Msg_Get (MSG_Must_Reset));
+     gui_menu_un_check_area (menus_ID.fm, 0, 1);
+     gui_menu_check (menus_ID.fm, 0);
+ }
+@@ -140,7 +140,7 @@
+     for (i = 0; i <= 100; i += 20)
+     {
+         if (i == 0)
+-            snprintf(buffer, countof(buffer), Msg_Get(MSG_Menu_Sound_Volume_Mute));
++            snprintf(buffer, countof(buffer), "%s", Msg_Get(MSG_Menu_Sound_Volume_Mute));
+         else
+             snprintf(buffer, countof(buffer), Msg_Get(MSG_Menu_Sound_Volume_Value), i);
+         menu_add_item(menu_id, buffer, AM_Nothing | Is_Checked (i - 9 < master_volume_100 && i + 9 > master_volume_100), 
+diff -urN meka-0.73-orig/srcs/sound/sound.c meka-0.73-patched/srcs/sound/sound.c
+--- meka-0.73-orig/srcs/sound/sound.c	2008-03-23 16:07:08.000000000 +1000
++++ meka-0.73-patched/srcs/sound/sound.c	2012-03-20 17:37:42.202014189 +1100
+@@ -171,7 +171,7 @@
+ {
+     if (AInitialize() != AUDIO_ERROR_NONE)
+     {
+-        Quit_Msg (Msg_Get (MSG_Sound_Init_Error_SEAL));
++        Quit_Msg ("%s", Msg_Get (MSG_Sound_Init_Error_SEAL));
+         return (MEKA_ERR_FAIL);
+     }
+     return (MEKA_ERR_OK);
+diff -urN meka-0.73-orig/srcs/textbox.c meka-0.73-patched/srcs/textbox.c
+--- meka-0.73-orig/srcs/textbox.c	2006-12-23 16:00:16.000000000 +1000
++++ meka-0.73-patched/srcs/textbox.c	2012-03-20 17:29:12.821292821 +1100
+@@ -106,9 +106,9 @@
+     t_app_messages *app = &TB_Message;  // Global instance
+ 
+     if (app->active ^= 1)
+-        Msg (MSGT_USER, Msg_Get (MSG_Message_Enabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Message_Enabled));
+     else
+-        Msg (MSGT_USER, Msg_Get (MSG_Message_Disabled));
++        Msg (MSGT_USER, "%s", Msg_Get (MSG_Message_Disabled));
+     gui_box_show (app->box, app->active, TRUE);
+     gui_menu_inverse_check (menus_ID.tools, 0);
+ }
+diff -urN meka-0.73-orig/srcs/tvoekaki.c meka-0.73-patched/srcs/tvoekaki.c
+--- meka-0.73-orig/srcs/tvoekaki.c	2010-05-30 21:14:30.000000000 +1100
++++ meka-0.73-patched/srcs/tvoekaki.c	2012-03-20 17:07:51.205533188 +1100
+@@ -55,8 +55,8 @@
+     if ((nmouse_b & 2) != 0 && (lmouse_b & 2) == 0)
+     {
+         TVOekaki.Infos ^= (TVOEKAKI_BIT_ON_BOARD);
+-        if (TVOEKAKI_ON_BOARD) Msg (MSGT_USER, Msg_Get (MSG_TVOekaki_Pen_Touch));
+-        else Msg (MSGT_USER, Msg_Get (MSG_TVOekaki_Pen_Away));
++        if (TVOEKAKI_ON_BOARD) Msg (MSGT_USER, "%s", Msg_Get (MSG_TVOekaki_Pen_Touch));
++        else Msg (MSGT_USER, "%s", Msg_Get (MSG_TVOekaki_Pen_Away));
+     }
+ 
+     lmouse_b = nmouse_b;
+diff -urN meka-0.73-orig/srcs/video.c meka-0.73-patched/srcs/video.c
+--- meka-0.73-orig/srcs/video.c	2008-03-23 16:07:18.000000000 +1000
++++ meka-0.73-patched/srcs/video.c	2012-03-20 16:54:06.367176638 +1100
+@@ -196,7 +196,7 @@
+                 {
+                     Meka_State = MEKA_STATE_GUI;
+                     Video_Setup_State ();
+-                    Msg (MSGT_USER, Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
++                    Msg (MSGT_USER, "%s", Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
+                     return;
+                 }
+ 				if (fs_page_0)
+@@ -252,7 +252,7 @@
+                 {
+                     Meka_State = MEKA_STATE_GUI;
+                     Video_Setup_State ();
+-                    Msg (MSGT_USER, Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
++                    Msg (MSGT_USER, "%s", Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
+                     return;
+                 }
+                 if (fs_page_0)
+@@ -289,7 +289,7 @@
+                 {
+                     Meka_State = MEKA_STATE_GUI;
+                     Video_Setup_State ();
+-                    Msg (MSGT_USER, Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
++                    Msg (MSGT_USER, "%s", Msg_Get (MSG_Error_Video_Mode_Back_To_GUI));
+                     return;
+                 }
+                 fs_out = screen;

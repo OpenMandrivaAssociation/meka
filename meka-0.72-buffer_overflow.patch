@@ -1,0 +1,15 @@
+diff -dur meka.orig/srcs/meka.h meka/srcs/meka.h
+--- meka.orig/srcs/meka.h	2007-05-08 20:47:24.000000000 +0200
++++ meka/srcs/meka.h	2007-05-25 19:26:05.000000000 +0200
+@@ -144,9 +144,9 @@
+ 
+ // Max path length
+ // FIXME: Portable way to obtain this at compilation stage?
+-#define FILENAME_LEN	(512)
++//#define FILENAME_LEN	(512)
+ //#define FILENAME_LEN	MAXPATHLEN
+-//#define FILENAME_LEN	PATH_MAX
++#define FILENAME_LEN	PATH_MAX
+ 
+ OPT_TYPE          opt;
+ TGFX_TYPE         tgfx;

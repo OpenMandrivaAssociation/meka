@@ -1,0 +1,16 @@
+diff -durN meka.orig/srcs/blit.c meka/srcs/blit.c
+--- meka.orig/srcs/blit.c	2007-05-27 04:45:48.000000000 +0200
++++ meka/srcs/blit.c	2010-11-20 15:35:52.286493356 +0100
+@@ -230,8 +230,10 @@
+ 			const u32 color_mod_g = ((color_org >> 5 ) & 0x3F) * blit_cfg.tv_mode_factor;
+ 			const u32 color_mod_b = ((color_org >> 11) & 0x1F) * blit_cfg.tv_mode_factor;
+ 			const u16 color_mod = (color_mod_r) | (color_mod_g << 5) | (color_mod_b << 11);
+-			*((u16 *)pdst1)++ = color_org;
+-			*((u16 *)pdst2)++ = color_mod;
++			*((u16 *)pdst1) = color_org;
++			*pdst1 += sizeof(u16);
++			*((u16 *)pdst2) = color_mod;
++			*pdst2 += sizeof(u16);
+ 		}
+ 	}
+ 	Blit_Fullscreen_Misc();
