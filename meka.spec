@@ -138,3 +138,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/16x16/apps/%{name}.png
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 
+
+
+%changelog
+* Tue Mar 20 2012 Andrey Bondrov <abondrov@mandriva.org> 0.73-1
++ Revision: 785808
+- imported package meka
+

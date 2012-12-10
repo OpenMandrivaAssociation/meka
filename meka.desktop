@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Meka
+Comment=Multi machine emulator for MS-DOS, MS-Windows and GNU/Linux
+Exec=meka
+Icon=meka
+Terminal=true
+Type=Application
+Categories=Game;Emulator;
+
