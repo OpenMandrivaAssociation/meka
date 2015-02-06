@@ -5,7 +5,7 @@
 
 Name:		meka
 Version:	0.73
-Release:	%mkrel 1
+Release:	2
 Summary:	Sega 8-bit machine emulator
 Group:		Emulators
 License:	MEKA and non-commercial
