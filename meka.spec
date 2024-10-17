@@ -9,7 +9,7 @@ Release:	2
 Summary:	Sega 8-bit machine emulator
 Group:		Emulators
 License:	MEKA and non-commercial
-URL:		http://www.smspower.org/meka/
+URL:		https://www.smspower.org/meka/
 Source0:	http://www.smspower.org/meka/releases/%{name}-%{pkgdate}-srcs-v%{pkgversion}.zip
 Source1:	%{name}.sh
 Source2:	%{name}.desktop
